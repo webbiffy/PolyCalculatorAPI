@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using PolyCalculator.WebAPI.Models;
+using PolyCalculator.WebAPI.Services;
 
 namespace PolyCalculator.WebAPI
 {
@@ -25,6 +28,14 @@ namespace PolyCalculator.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<PolyCalculatorDatabaseSettings>(
+                Configuration.GetSection(nameof(PolyCalculatorDatabaseSettings)));
+
+            services.AddSingleton<IPolyCalculatorDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<PolyCalculatorDatabaseSettings>>().Value);
+
+            services.AddSingleton<NetPresentValueCalculatorService>();
+
             services.AddControllers();
         }
 

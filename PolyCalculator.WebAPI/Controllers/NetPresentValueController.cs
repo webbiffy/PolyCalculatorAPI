@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PolyCalculator.WebAPI.Services;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace PolyCalculator.WebAPI.Controllers
 {
@@ -8,16 +11,11 @@ namespace PolyCalculator.WebAPI.Controllers
     public class NetPresentValueController : PolyCalculatorControllerBase
     {
         private readonly ILogger<NetPresentValueController> _logger;
-
-        public NetPresentValueController(ILogger<NetPresentValueController> logger)
+        private readonly NetPresentValueCalculatorService _netPresentValueService;
+        public NetPresentValueController(ILogger<NetPresentValueController> logger, NetPresentValueCalculatorService netPresentValueService)
         {
             _logger = logger;
-        }
-
-        [HttpGet]
-        public string Get()
-        {
-            return "Welcome to net present value calculator";
+            _netPresentValueService = netPresentValueService;
         }
 
         [HttpPost("fix/calculate")]
@@ -31,5 +29,27 @@ namespace PolyCalculator.WebAPI.Controllers
         {
             return netPresentValue.Calculate();
         }
+
+        [HttpGet]
+        public string Get()
+        {
+            var netPresentValues = _netPresentValueService.Get();
+            return SerializerPrettyPrint(netPresentValues);
+        }
+
+        [HttpGet("{id:length(24)}", Name = "GetNetPresentValue")]
+        public string Get(string id)
+        {
+            var netPresentValue = _netPresentValueService.Get(id);
+            return SerializerPrettyPrint(netPresentValue);
+        }
+
+        [HttpPost("fix/create")]
+        public string Create(NetPresentValueFixed netPresentValue)
+        {
+            _netPresentValueService.Create(netPresentValue);
+            return SerializerPrettyPrint(netPresentValue);
+        }
+
     }
 }

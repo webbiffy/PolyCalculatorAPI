@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace PolyCalculator.WebAPI
 {
+    
     public sealed class NetPresentValueIncremental : NetPresentValueBase
     {
         [JsonPropertyName("lower_bound")]

@@ -6,10 +6,6 @@ namespace PolyCalculator.WebAPI
 {
     public abstract class NetPresentValueBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
         [JsonPropertyName("initial_investment")]
         public decimal InitialInvestment { get; set; }
 

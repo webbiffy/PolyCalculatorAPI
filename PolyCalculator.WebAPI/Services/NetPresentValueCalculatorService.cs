@@ -7,29 +7,29 @@ namespace PolyCalculator.WebAPI.Services
 {
     public class NetPresentValueCalculatorService
     {
-        private readonly IMongoCollection<NetPresentValueFixed> _netPresentValueFixed;
+        private readonly IMongoCollection<NetPresentValueTransaction> _netPresentValueTransaction;
 
         public NetPresentValueCalculatorService(IPolyCalculatorDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _netPresentValueFixed = database.GetCollection<NetPresentValueFixed>("NetPresentValue");
+            _netPresentValueTransaction = database.GetCollection<NetPresentValueTransaction>("NetPresentValue");
         }
 
-        public List<NetPresentValueFixed> Get() =>
-            _netPresentValueFixed.Find(nvp => true).ToList();
+        public List<NetPresentValueTransaction> Get() =>
+            _netPresentValueTransaction.Find(nvp => true).ToList();
 
-        public NetPresentValueFixed Get(string id) =>
-            _netPresentValueFixed.Find<NetPresentValueFixed>(nvp => nvp.Id == id).FirstOrDefault();
+        public NetPresentValueTransaction Get(string id) =>
+            _netPresentValueTransaction.Find<NetPresentValueTransaction>(nvp => nvp.Id == id).FirstOrDefault();
 
-        public NetPresentValueFixed Create(NetPresentValueFixed netPresentValue)
+        public NetPresentValueTransaction Create(NetPresentValueTransaction netPresentValue)
         {
-            _netPresentValueFixed.InsertOne(netPresentValue);
+            _netPresentValueTransaction.InsertOne(netPresentValue);
             return netPresentValue;
         }
 
-        public void Update(string id, NetPresentValueFixed netPresentValue) =>   
-            _netPresentValueFixed.ReplaceOne(nvp => nvp.Id == id, netPresentValue);
+        public void Update(string id, NetPresentValueTransaction netPresentValue) =>
+            _netPresentValueTransaction.ReplaceOne(nvp => nvp.Id == id, netPresentValue);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PolyCalculator.WebAPI.Models;
 using PolyCalculator.WebAPI.Services;
 
 namespace PolyCalculator.WebAPI.Controllers
@@ -10,7 +11,8 @@ namespace PolyCalculator.WebAPI.Controllers
     {
         private readonly ILogger<NetPresentValueController> _logger;
         private readonly NetPresentValueCalculatorService _netPresentValueService;
-        public NetPresentValueController(ILogger<NetPresentValueController> logger, NetPresentValueCalculatorService netPresentValueService)
+        public NetPresentValueController(ILogger<NetPresentValueController> logger, 
+                                            NetPresentValueCalculatorService netPresentValueService)
         {
             _logger = logger;
             _netPresentValueService = netPresentValueService;
@@ -42,15 +44,15 @@ namespace PolyCalculator.WebAPI.Controllers
             return SerializerPrettyPrint(netPresentValue);
         }
 
-        [HttpPost("fix/create")]
-        public string Create(NetPresentValueFixed netPresentValue)
+        [HttpPost]
+        public string Create(NetPresentValueTransaction netPresentValue)
         {
             _netPresentValueService.Create(netPresentValue);
             return SerializerPrettyPrint(netPresentValue);
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Edit(string id, NetPresentValueFixed newNetPresentValue)
+        public IActionResult Edit(string id, NetPresentValueTransaction newNetPresentValue)
         {
             var netPresentValue = _netPresentValueService.Get(id);
             if(netPresentValue == null)

@@ -28,5 +28,8 @@ namespace PolyCalculator.WebAPI.Services
             _netPresentValueFixed.InsertOne(netPresentValue);
             return netPresentValue;
         }
+
+        public void Update(string id, NetPresentValueFixed netPresentValue) =>   
+            _netPresentValueFixed.ReplaceOne(nvp => nvp.Id == id, netPresentValue);
     }
 }

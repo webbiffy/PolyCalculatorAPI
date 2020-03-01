@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PolyCalculator.WebAPI.Services;
-using System.Collections.Generic;
-using System.Text.Json;
 
 namespace PolyCalculator.WebAPI.Controllers
 {
@@ -37,7 +35,7 @@ namespace PolyCalculator.WebAPI.Controllers
             return SerializerPrettyPrint(netPresentValues);
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetNetPresentValue")]
+        [HttpGet("{id:length(24)}")]
         public string Get(string id)
         {
             var netPresentValue = _netPresentValueService.Get(id);
@@ -51,5 +49,18 @@ namespace PolyCalculator.WebAPI.Controllers
             return SerializerPrettyPrint(netPresentValue);
         }
 
+        [HttpPut("{id:length(24)}")]
+        public IActionResult Edit(string id, NetPresentValueFixed newNetPresentValue)
+        {
+            var netPresentValue = _netPresentValueService.Get(id);
+            if(netPresentValue == null)
+            {
+                return NotFound();
+            }
+
+            _netPresentValueService.Update(id, newNetPresentValue);
+
+            return Ok();
+        }
     }
 }
